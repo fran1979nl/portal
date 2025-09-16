@@ -8,9 +8,9 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   webServer: {
-    command: 'npm run start',      // usa el build
+    command: 'npm run start',             // sirve el build
     url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
-    timeout: 180_000               // dale tiempo al server en CI
+    reuseExistingServer: !process.env.CI, // en local reutiliza si ya está levantado
+    timeout: 180_000
   },
 });
