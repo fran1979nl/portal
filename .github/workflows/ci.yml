@@ -1,8 +1,10 @@
-name: CI
+name: check
+
 on:
+  pull_request:
+    branches: [main]
   push:
     branches: [main]
-  pull_request:
 
 jobs:
   check:
@@ -13,17 +15,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
+          cache: npm
       - run: npm ci
-        env:
-          NEXT_TELEMETRY_DISABLED: 1
+      - run: npx playwright install --with-deps
       - run: npm run build
-        env:
-          NEXT_TELEMETRY_DISABLED: 1
-          CI: true
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
-      - name: E2E tests
+      - name: Start Next.js on :3000
+        run: |
+          npm run start &
+          echo "Esperando a que responda http://localhost:3000 ..."
+          timeout 60 bash -c 'until curl -sSf http://localhost:3000 >/dev/null; do sleep 1; done'
+      - name: Run Playwright smoke tests
         run: npx playwright test
-        env:
-          CI: true
+    env:
+      CI: true
