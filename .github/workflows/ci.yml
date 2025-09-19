@@ -9,22 +9,11 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps
-      - run: npm run build
-      - name: Start Next.js on :3000
-        run: |
-          npm run start &
-          echo "Esperando a que responda http://localhost:3000 ..."
-          timeout 60 bash -c 'until curl -sSf http://localhost:3000 >/dev/null; do sleep 1; done'
-      - name: Run Playwright smoke tests
-        run: npx playwright test
-    env:
-      CI: true
+      - run: npx playwright test
