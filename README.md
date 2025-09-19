@@ -39,3 +39,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 // intento bloqueado REAL
 // intento bloqueado REAL
 // intento bloqueado PUBLIC
+- via PR con CI
