@@ -1,23 +1,19 @@
-ame: check
-
+name: check
 on:
   pull_request:
-  push:
+    branches: [ main ]
 
 jobs:
   check:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
-
-      - run: npm ci
-      - run: npm run lint || true
-      - run: npm run typecheck || true
-      - run: npm run build
+      - name: Install deps
+        run: npm ci --prefer-offline --no-audit
+      - name: Build
+        run: npm run build
 
